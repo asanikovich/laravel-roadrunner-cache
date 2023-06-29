@@ -1,0 +1,76 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+      - '*.x'
+  pull_request:
+
+jobs:
+  tests-rr:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.1, 8.2]
+        laravel: [10]
+        rr: [2023.1.4]
+
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - RR ${{ matrix.rr }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Install laravel
+        run: |
+          composer create-project laravel/laravel laravel
+
+      - name: Setup laravel with local laravel repository
+        working-directory: ./laravel
+        run: |
+          composer config repositories.laravel-roadrunner-cache path ../.
+          composer config minimum-stability dev
+          composer require asanikovich/laravel-roadrunner-cache spiral/roadrunner-cli spiral/roadrunner-http laravel/octane
+
+      - name: Copy config files
+        run: cp .rr.yaml laravel/.rr.yaml
+
+      - name: Install RoadRunner Binary
+        working-directory: ./laravel
+        run: |
+          docker run --rm -v ${PWD}:/rootfs:rw --entrypoint "" spiralscout/roadrunner:${{ matrix.rr }} cp /usr/bin/rr /rootfs/rr
+
+      - name: Install basic Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Setup package
+        working-directory: ./laravel
+        run: php artisan vendor:publish --tag="laravel-roadrunner-cache-config"
+
+      - name: Run RoadRunner
+        run: ./laravel/rr serve -c .rr.yaml &
+        env:
+          APP_BASE_PATH: /home/runner/work/laravel-roadrunner-cache/laravel-roadrunner-cache/laravel
+          LARAVEL_OCTANE: 1
+
+      - name: Execute tests
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit
+        env:
+          FEATURE_TEST: rr
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -1,0 +1,18 @@
+version: '3'
+rpc:
+  listen: 'tcp://127.0.0.1:6001'
+server:
+  command: php ${APP_BASE_PATH}/vendor/bin/roadrunner-worker
+http:
+  address: '127.0.0.1:8080'
+  pool:
+    num_workers: 1
+kv:
+  memory:
+    driver: memory
+    config:
+      interval: 1
+  boltdb:
+    driver: boltdb
+    config:
+      interval: 1

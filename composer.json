@@ -1,0 +1,58 @@
+{
+    "name": "asanikovich/laravel-roadrunner-cache",
+    "description": "RoadRunner KV cache for laravel",
+    "homepage": "https://github.com/asanikovich/laravel-roadrunner-cache",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aliaksei Sanikovich",
+            "email": "asanikovich@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^10.0",
+        "spiral/roadrunner-kv": "^4.0"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "*",
+        "laravel/pint": "^1.5",
+        "nunomaduro/larastan": "^1.0|^2.4",
+        "orchestra/testbench": "^8.0",
+        "pestphp/pest-plugin-laravel": "^1.0|^2.0"
+    },
+    "suggest": {
+        "ext-igbinary": "(>3.1.6) Igbinary serailizer support"
+    },
+    "autoload": {
+        "psr-4": {
+            "ASanikovich\\LaravelRoadRunnerCache\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ASanikovich\\LaravelRoadRunnerCache\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G",
+        "test": "vendor/bin/pest",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage --min=100",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ASanikovich\\LaravelRoadRunnerCache\\LaravelRoadRunnerCacheProvider"
+            ]
+        }
+    }
+}

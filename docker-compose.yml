@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+  rr:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "6001:6001"
+    environment:
+      APP_BASE_PATH: /app/laravel
+      LARAVEL_OCTANE: 1
