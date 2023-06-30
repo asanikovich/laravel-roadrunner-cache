@@ -22,10 +22,6 @@ class RoadRunnerServerTest extends TestCase
 
     public function testServerStart(): void
     {
-        if (env('FEATURE_TEST') !== 'rr') {
-            $this->markTestSkipped('Only for RoadRunner Server');
-        }
-
         $this->checkServerHttp();
     }
 
@@ -34,10 +30,6 @@ class RoadRunnerServerTest extends TestCase
      */
     public function testCache(string $driver, string $prefix): void
     {
-        if (env('FEATURE_TEST') !== 'rr') {
-            $this->markTestSkipped('Only for RoadRunner Server');
-        }
-
         $repository = Cache::driver($driver);
 
         $this->assertTrue($repository->clear());

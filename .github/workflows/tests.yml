@@ -67,8 +67,6 @@ jobs:
 
       - name: Execute tests
         run: XDEBUG_MODE=coverage vendor/bin/phpunit
-        env:
-          FEATURE_TEST: rr
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

@@ -87,7 +87,7 @@ All done! 🚀
 ## Development
 Here are some useful commands for development
 
-Before running tests run db by docker-compose:
+Before running tests run docker-compose:
 ```bash
 docker-compose up -d
 ```
