@@ -1,0 +1,6 @@
+/vendor
+.DS_Store
+/composer.lock
+/.github
+/.idea
+/.git
