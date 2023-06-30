@@ -7,6 +7,9 @@ namespace ASanikovich\LaravelRoadRunnerCache;
 use Spiral\Goridge\RPC\RPC;
 use Spiral\Goridge\RPC\RPCInterface;
 use Spiral\RoadRunner\KeyValue\Factory;
+use Spiral\RoadRunner\KeyValue\Serializer\DefaultSerializer;
+use Spiral\RoadRunner\KeyValue\Serializer\IgbinarySerializer;
+use Spiral\RoadRunner\KeyValue\Serializer\SodiumSerializer;
 
 class RoadRunnerFactory
 {
@@ -21,7 +24,18 @@ class RoadRunnerFactory
      */
     public static function createLaravelCacheStore(RPCInterface $rpc, array $config): RoadRunnerCacheStore
     {
-        $storage = (new Factory($rpc))->select($config['connection']);
+        if (($config['serializer'] ?? null) === 'igbinary') {
+            $serializer = new IgbinarySerializer();
+        } else {
+            $serializer = new DefaultSerializer();
+        }
+
+        $encryptionKey = $config['encryption_key'] ?? null;
+        if ($encryptionKey !== null) {
+            $serializer = new SodiumSerializer($serializer, $encryptionKey);
+        }
+
+        $storage = (new Factory($rpc, $serializer))->select($config['connection']);
 
         /** @phpstan-ignore-next-line  */
         return new RoadRunnerCacheStore($storage, $config['prefix'] ?? config('cache.prefix', ''));

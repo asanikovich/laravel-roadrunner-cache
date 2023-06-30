@@ -21,7 +21,8 @@
         "orchestra/testbench": "^8.0"
     },
     "suggest": {
-        "ext-igbinary": "(>3.1.6) Igbinary serailizer support"
+        "ext-igbinary": "(>3.1.6) Igbinary serailizer support",
+        "ext-sodium": "Sodium encryption support"
     },
     "autoload": {
         "psr-4": {
@@ -35,8 +36,8 @@
     },
     "scripts": {
         "phpstan": "vendor/bin/phpstan analyse --memory-limit=2G",
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit",
+        "test": "docker-compose exec rr /bin/sh -c 'vendor/bin/phpunit'",
+        "test-coverage": "docker-compose exec rr /bin/sh -c 'XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-text'",
         "format": "vendor/bin/pint"
     },
     "config": {
