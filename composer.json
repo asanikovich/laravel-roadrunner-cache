@@ -53,5 +53,11 @@
                 "ASanikovich\\LaravelRoadRunnerCache\\LaravelRoadRunnerCacheProvider"
             ]
         }
-    }
+    },
+    "funding": [
+        {
+            "url": "https://ko-fi.com/asanikovich",
+            "type": "ko-fi"
+        }
+    ]
 }
