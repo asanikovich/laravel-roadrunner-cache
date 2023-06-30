@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - 'laravel*'
       - '*.x'
   pull_request:
 
@@ -15,8 +16,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.1, 8.2]
-        laravel: [10]
+        php: [8.1]
+        laravel: [9]
         rr: [2023.1.4]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - RR ${{ matrix.rr }}
@@ -35,14 +36,14 @@ jobs:
 
       - name: Install laravel
         run: |
-          composer create-project laravel/laravel laravel
+          composer create-project laravel/laravel:^9.0 laravel
 
       - name: Setup laravel with local laravel repository
         working-directory: ./laravel
         run: |
           composer config repositories.laravel-roadrunner-cache path ../.
           composer config minimum-stability dev
-          composer require asanikovich/laravel-roadrunner-cache spiral/roadrunner-cli spiral/roadrunner-http laravel/octane
+          composer require asanikovich/laravel-roadrunner-cache spiral/roadrunner-cli spiral/roadrunner-http laravel/octane -W
 
       - name: Copy config files
         run: cp .rr.yaml laravel/.rr.yaml
