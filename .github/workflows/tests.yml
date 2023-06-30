@@ -2,10 +2,11 @@ name: tests
 
 on:
   push:
-    branches:
-      - master
-      - '*.x'
+    paths:
+      - "**.php"
+    branches: [master, '*.x']
   pull_request:
+    branches: [master, '*.x']
 
 jobs:
   tests-rr:

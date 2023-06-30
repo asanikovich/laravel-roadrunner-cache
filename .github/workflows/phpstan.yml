@@ -1,6 +1,12 @@
 name: Static code analysis
 
-on: [ push, pull_request ]
+on:
+  push:
+    paths:
+      - "**.php"
+    branches: [master, '*.x']
+  pull_request:
+    branches: [master, '*.x']
 
 jobs:
   phpstan:
