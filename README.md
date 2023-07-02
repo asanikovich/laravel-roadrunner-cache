@@ -8,7 +8,13 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/asanikovich/laravel-roadrunner-cache.svg?style=flat-square)](https://packagist.org/packages/asanikovich/laravel-roadrunner-cache)
 [![Licence](https://img.shields.io/packagist/l/asanikovich/laravel-roadrunner-cache.svg?style=flat-square)](https://packagist.org/packages/asanikovich/laravel-roadrunner-cache)
 
-**This Laravel package allows you to work with RoadRunner KV Cache in Laravel (as cache driver).**
+**This Laravel package allows you to work with RoadRunner KV Cache in Laravel (as a cache driver).**
+
+## For laravel/octane users ##
+
+Please note, that `swoole` in-memory or table cache works **only** inside HTTP workers.
+
+If you want a cache that works from all parts of PHP (HTTP or CLI) - our package and RoadRunner KV will help you.
 
 ## Getting Started
 
